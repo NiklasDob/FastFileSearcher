@@ -52,10 +52,11 @@ func Index(dirname string, drop bool) {
 
 	err = godirwalk.Walk(dirname, &godirwalk.Options{
 		Callback: func(osPathname string, de *godirwalk.Dirent) error {
+
 			osPathname = strings.ReplaceAll(osPathname, "\\", "/")
-			//osPathname = strings.ReplaceAll(osPathname, "$", "_DOLLAR_")
+
 			if de.IsDir() {
-				// fmt.Printf("DIR %s %s\n", de.ModeType(), osPathname)
+				// MAYBE DO SOMETHING HERE
 			} else if de.IsRegular() {
 				// After 10000 files commmit the files to the db
 				if index%10000 == 0 {
@@ -112,9 +113,6 @@ func Index(dirname string, drop bool) {
 	tx.Commit()
 	stmt.Close()
 
-	if err != nil {
-		panic(err)
-	}
 }
 
 func Search(file string) {
@@ -138,7 +136,7 @@ func Search(file string) {
 		if err != nil {
 			log.Fatal(err)
 		}
-		fmt.Printf("%s, %s, %s \n", path, filename, ext)
+		fmt.Printf("Result: %s, %s, %s \n", path, filename, ext)
 	}
 	err = rows.Err()
 	if err != nil {
@@ -148,6 +146,6 @@ func Search(file string) {
 }
 
 func main() {
-	Index("C:\\", true)
-	// Search("main.py")
+	//Index("C:\\", true)
+	Search("main.py")
 }
